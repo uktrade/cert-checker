@@ -16,9 +16,11 @@ django-axes==4.4.0
 django-environ==0.4.5
 django-ipware==2.1.0
 docutils==0.14
+gunicorn==19.9.0
 idna==2.7
 jmespath==0.9.3
 multidict==4.3.1
+psycopg2==2.7.5
 pycparser==2.18
 pyOpenSSL==18.0.0
 python-dateutil==2.7.3
