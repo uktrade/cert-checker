@@ -28,7 +28,7 @@ class DomainManager(models.Manager):
         """Has the checker run in the last hour?"""
         return Domain.objects.filter(
             status_in=[Domain.OK, Domain.ERROR, Domain.WARNING],
-            last_checked__lt=current_time - dt.timedelta(60)).exists()
+            last_checked__lt=current_time() - dt.timedelta(hours=1)).exists()
 
 
 class Domain(models.Model):

@@ -23,3 +23,5 @@ config/saml/prod/*.crt
 urls.txt
 
 db.sqlite3
+
+staticfiles
