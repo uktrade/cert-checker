@@ -7,14 +7,18 @@ from check_tls_certs import check_domains, domain_definitions_from_lines, get_ce
 from check.models import Domain
 
 
+def supress_statuses(status_list):
+    return list(filter(
+        lambda item: not (item[0] == 'warning' and item[1].startswith('More alternate names than specified')),
+        status_list))
+
+
 class Command(BaseCommand):
     help = 'Scan domains and verify SSL certificates'
 
     def handle(self, *args, **options):
 
-        # domain_objects = [item.domain_name() for item in Domain.objects.get_domain_check_list()]
-
-        domain_objects = Domain.objects.all()
+        domain_objects = Domain.objects.get_domain_check_list()
 
         if not domain_objects:
             self.stdout.write(self.style.WARNING('Nothing to check.'))
@@ -26,6 +30,9 @@ class Command(BaseCommand):
         results = check_domains(domains, domain_certs, dt.datetime.utcnow())
 
         for domain_list, status_list, expiry_date in results:
+
+            status_list = supress_statuses(status_list)
+
             name, port = domain_list[0].split(':')
             domain_obj = Domain.objects.get(name=name, port=int(port))
 
@@ -44,9 +51,5 @@ class Command(BaseCommand):
             domain_obj.status_text = formatted_text
             domain_obj.last_checked = dt.datetime.now(dt.timezone.utc)
             domain_obj.save()
-
-            # print('Cert for domains: {}\n status:\n {}\n'.format(
-            #     ' / '.join(domain_list),
-            #     '\n'.join([level + ': ' + text for level, text in status_list])))
 
         self.stdout.write(self.style.SUCCESS('Scanned TLS certs on {} domains'.format(len(results))))

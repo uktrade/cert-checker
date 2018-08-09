@@ -14,8 +14,8 @@ class DomainManager(models.Manager):
 
         return self.filter(
             Q(status=Domain.NOTCHECKED) |
-            Q(status__in=[Domain.WARNING, Domain.ERROR], last_checked__gte=current_time - dt.timedelta(60)) |
-            Q(status=Domain.OK, last_checked__gte=current_time - dt.timedelta(24*60))
+            Q(status__in=[Domain.WARNING, Domain.ERROR], last_checked__gte=current_time() - dt.timedelta(60)) |
+            Q(status=Domain.OK, last_checked__gte=current_time() - dt.timedelta(24*60))
         )
 
     def has_errors(self):
@@ -27,7 +27,7 @@ class DomainManager(models.Manager):
     def has_check_run_recently(self):
         """Has the checker run in the last hour?"""
         return Domain.objects.filter(
-            status_in=[Domain.OK, Domain.ERROR, Domain.WARNING],
+            status__in=[Domain.OK, Domain.ERROR, Domain.WARNING],
             last_checked__lt=current_time() - dt.timedelta(hours=1)).exists()
 
 
@@ -66,8 +66,8 @@ class DomainManager(models.Manager):
 
         return self.filter(
             Q(status=Domain.NOTCHECKED) |
-            Q(status__in=[Domain.WARNING, Domain.ERROR], last_checked__gte=current_time - dt.timedelta(60)) |
-            Q(status=Domain.OK, last_checked__gte=current_time - dt.timedelta(24*60))
+            Q(status__in=[Domain.WARNING, Domain.ERROR], last_checked__gte=current_time() - dt.timedelta(60)) |
+            Q(status=Domain.OK, last_checked__gte=current_time() - dt.timedelta(24*60))
         )
 
     def has_errors(self):
@@ -80,4 +80,4 @@ class DomainManager(models.Manager):
         """Has the checker run in the last hour?"""
         return Domain.objects.filter(
             status_in=[Domain.OK, Domain.ERROR, Domain.WARNING],
-            last_checked__lt=current_time - dt.timedelta(60)).exists()
+            last_checked__lt=current_time() - dt.timedelta(60)).exists()

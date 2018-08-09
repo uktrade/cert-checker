@@ -26,12 +26,12 @@ class BasePingdomView(View):
 
 class PingdomHealthCheckView(BasePingdomView):
     def do_check(self):
-        return Domain.objects.has_warnings()
+        return not Domain.objects.has_warnings()
 
 
 class PingdomWarningView(BasePingdomView):
     def do_check(self):
-        return Domain.objects.has_errors()
+        return not Domain.objects.has_errors()
 
 
 class PingdomErrorView(BasePingdomView):
