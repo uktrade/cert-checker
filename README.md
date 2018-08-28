@@ -1,4 +1,4 @@
-# DIT TLS certificate checker§
+# DIT TLS certificate checker
 
 ## Overview
 
@@ -23,11 +23,11 @@ An additional health check endpoint checks if the periodic ssl check task has ru
 
 ## Implementation
 
-The app is built in django and uses the django admin app to provide a very basic web interface which allows users to add domains to monitored.
+The app uses the django admin app to manage the list of monitored domains.
 
-A django management command needs to be run periodically [suggested: every 30 minutes] to perform the checks: `./manage.py run_ssl_check` 
+A django management command needs to be run periodically [suggested: every 30 minutes] to perform the TLS checks: `./manage.py run_ssl_check` 
 
-Domains are checked every 24 hours by default, but if there are errors or warnings, the domain is rechecked every hour, or thereabouts depending on when the `run_ssl_check` command is executed.
+Domains are checked every 24 hours by default, but if there are errors or warnings, the domain is rechecked every hour.
 
 ## Depenencies
 
@@ -68,8 +68,6 @@ IP filtering is enabled by setting the following env vars:
 
 `RESTRICT_ADMIN=True`
 `ALLOWED_ADMIN_IPS=a comma separated list of IPv4 addresses`
-
-NOTE: the app is geared to run on gov uk paas, and the ip filtering logic may need to be adjustedd if the app is run elsewhere.
 
 ### failed login account lockout
 
