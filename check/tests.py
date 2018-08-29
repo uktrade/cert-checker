@@ -114,10 +114,13 @@ class DomainModelTestCase(TestCase):
             name='domain5', last_checked=current_time()-dt.timedelta(minutes=200), status=Domain.WARNING)
         domain_factory(
             name='domain6', last_checked=current_time()-dt.timedelta(minutes=30), status=Domain.WARNING)
+        domain_factory(
+            name='domain7', last_checked=None, status=Domain.NOTCHECKED
+        )
 
         domains = set(Domain.objects.get_domain_check_list().values_list('name', flat=True))
 
-        self.assertEqual({'domain1', 'domain3', 'domain5'}, domains)
+        self.assertEqual({'domain1', 'domain3', 'domain5', 'domain7'}, domains)
 
     def test_update_supresses_status(self):
 
