@@ -14,8 +14,8 @@ An error state occurs if:
 
 Warning/Error states are reported by the following pingdom endpoints:
 
-'/pingdom/warnings/'
-'/pingdom/errors/'
+`/pingdom/warnings/`  
+`/pingdom/errors/`
 
 An additional health check endpoint checks if the periodic ssl check task has run within the last hour:
 
@@ -29,7 +29,7 @@ A django management command needs to be run periodically [suggested: every 30 mi
 
 Domains are checked every 24 hours by default, but if there are errors or warnings, the domain is rechecked every hour.
 
-## Depenencies
+## Dependencies
 
 1. python 3.6.x+
 2. a postgres database OR sqlite3 for local development
@@ -58,7 +58,7 @@ To run the app locally:
 
 ## Deployment to gov uk paas
 
-The app is ready for gov uk paas deployment. It requires a postgres database binding to the application. To deploy simply `cf push cert-checker`
+The app is ready for gov uk paas deployment. It requires a postgres database binding to the application. To deploy simply run: `cf push cert-checker`
 
 ## Other considerations
 
@@ -66,7 +66,7 @@ The app is ready for gov uk paas deployment. It requires a postgres database bin
 
 IP filtering is enabled by setting the following env vars:
 
-`RESTRICT_ADMIN=True`
+`RESTRICT_ADMIN=True`  
 `ALLOWED_ADMIN_IPS=a comma separated list of IPv4 addresses`
 
 ### failed login account lockout
