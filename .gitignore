@@ -21,3 +21,7 @@ config/saml/prod/*.crt
 .envrc
 
 urls.txt
+
+db.sqlite3
+
+staticfiles
