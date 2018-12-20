@@ -38,13 +38,12 @@ class DomainManager(models.Manager):
             last_checked__gt=current_time() - dt.timedelta(minutes=60)).exists()
 
     def update_domain_status(self, domain_list, expiry_date, status_list):
-
         status_list = supress_statuses(status_list)
 
         if expiry_date:
-            if expiry_date.date() >= current_time().date():
+            if current_time().date() > expiry_date.date():
                 status_list.append(['error', 'certificate has expired'])
-            elif expiry_date >= current_time()-dt.timedelta(days=14):
+            elif current_time().date() > expiry_date.date() - dt.timedelta(days=14):
                 status_list.append(['warning', 'certificate is due to expire soon'])
 
         name, port = domain_list[0].split(':')

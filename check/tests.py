@@ -131,11 +131,11 @@ class DomainModelTestCase(TestCase):
         ]
 
         domain = Domain.objects.update_domain_status(
-            [domain.domain_name()], current_time()-dt.timedelta(days=30), status_text)
+            [domain.domain_name()], current_time()+dt.timedelta(days=30), status_text)
 
         self.assertEqual(domain.status, Domain.OK)
 
-    def test_udpate_records_last_checked_timestamp(self):
+    def test_update_records_last_checked_timestamp(self):
 
         domain = domain_factory()
 
@@ -150,7 +150,7 @@ class DomainModelTestCase(TestCase):
         domain = domain_factory()
 
         domain = Domain.objects.update_domain_status(
-            [domain.domain_name()], current_time(), [])
+            [domain.domain_name()], current_time() - dt.timedelta(days=1), [])
 
         self.assertEqual(domain.status, Domain.ERROR)
         self.assertIn(domain.status_text, 'error: certificate has expired')
@@ -159,7 +159,7 @@ class DomainModelTestCase(TestCase):
         domain = domain_factory()
 
         domain = Domain.objects.update_domain_status(
-            [domain.domain_name()], current_time()-dt.timedelta(days=5), [])
+            [domain.domain_name()], current_time()+dt.timedelta(days=5), [])
 
         self.assertEqual(domain.status, Domain.WARNING)
         self.assertEqual(domain.status_text, 'warning: certificate is due to expire soon')
