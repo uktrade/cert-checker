@@ -1,3 +1,4 @@
+import json
 import time
 
 from django.http import HttpResponse
@@ -38,3 +39,21 @@ class PingdomErrorView(BasePingdomView):
     def do_check(self):
         return not Domain.objects.has_errors()
 
+
+class DisplayStatusView(View):
+    def get(self, request, *args, **kwargs):
+
+        status = []
+        for item in Domain.objects.filter(status__in=[Domain.WARNING, Domain.ERROR]):
+            status.append(
+                {
+                    "title": {
+                        "text": item.name
+                    },
+                    "label": {
+                        "name": item.status
+                    }
+                }
+            )
+
+        return HttpResponse(json.dumps(status), content_type='application/json')
